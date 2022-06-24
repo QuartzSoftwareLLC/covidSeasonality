@@ -1,4 +1,4 @@
-Package: shiny.covariants
+Package: shiny.covidSeasonality
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: person('Jacob', ,'Clarke', email = 'jacobclarke718@gmail.com', role = c('cre', 'aut'))
@@ -15,7 +15,13 @@ Imports:
     ggplot2,
     shiny,
     shiny.quartz,
-    ggquartz
+    ggquartz,
+    janitor,
+    wppExplorer,
+    cowplot,
+    anomalize,
+    prophet,
+    tidyr
 Remotes: 
     github::quartzsoftwarellc/shiny.mui,
     github::quartzsoftwarellc/shiny.quartz,
