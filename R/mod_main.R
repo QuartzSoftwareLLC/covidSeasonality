@@ -7,11 +7,14 @@ mod_main_ui <- function(id) {
     ns <- NS(id)
     shiny.quartz::QCard(
         VStack(
-            QSelect.shinyInput(
+             shiny.mui::Autocomplete.shinyInput(
                 ns("country"),
-                options = make_options(shiny.covidSeasonality::country_options),
-                value = "United States",
-                label = "Country"
+                inputProps = list(label = "Country(ies)"),
+                options = shiny.covidSeasonality::country_options,
+                sx = list(mb = 1),
+                multiple = T,
+                value = list("United States"),
+                disableCloseOnSelect = T
             ),
             plotly::plotlyOutput(ns("plot"))
         )
@@ -25,10 +28,13 @@ mod_main_ui <- function(id) {
 mod_main_server <- function(id) {
     moduleServer(id, function(input, output, session) {
         ns <- session$ns
+
+countryDebounced <- reactive(input$country) %>% debounce(500)
         output$plot <- plotly::renderPlotly({
-            req(input$country)
+            req(countryDebounced())
+            req(countryDebounced() %>% length())
             plotter(
-                locales = input$country,
+                locales = countryDebounced(),
                 decomposition.method = "twitter",
                 anomalize.method = "gesd"
             ) %>%
